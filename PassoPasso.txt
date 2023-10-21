@@ -1,0 +1,42 @@
+Passo a passo:
+- Instalar as libs, sequelize, drive nativo, etc
+- Fazer uma pasta de config para exportar as configurações do servidor
+- Fazer uma pasta de database para criar um arquivo de conexao de banco puxando as informações de config
+- Fazer uma pasta de migrations
+- Fazer um arquivo chamado .sequelizerc
+- Nesse arquivo colocar informações onde está guardado os arquivos do database
+- Para criar a migration: npx sequelize-cli migration:create --name=create_user
+- Rodar as migrations npx sequelize-cli db:migrate
+- Desfazer a ultima migrate rodada npx sequelize-cli db:migrate:undo
+- Desfazer todas as migrates npx sequelize-cli db:migrate:undo:all
+- Pode também fazer uma migrate para adicionar um novo campo na coluna depois de dar um roolback nela
+
+Exemplo de criação de nova coluna em uma migration que já existe:
+'use strict';
+
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    return queryInterface.addColumn(
+      'users',
+      'age',
+      {
+        type: Sequelize.INTEGER
+      }
+    )
+  },
+
+  down: async (queryInterface, Sequelize) => {
+    return queryInterface.removeColumn(
+      'users',
+      'age'
+    )
+  }
+};
+
+- Para refazer a alteração só dar npx sequelize-cli db:migrate:undo
+- Criar uma pasta chamada models que vai fazer toda a comunicação das entendidades com o banco de dados
+- Dentro do arquivo crie a arquivo em forma de classe
+- Importe o Model dentro de sequelize
+- E extenda(extends) os metodos dentro da sua classe
+- Crie um metodo chamado init que tem uma parametro como padrão
+- E dentro dele chama a classe que está sendo extendido (super) e chame o metodo init que tem dentro de Model
